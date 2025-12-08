@@ -1,10 +1,15 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FaStarOfLife } from "react-icons/fa";
 import styles from "./About.module.css";
-gsap.registerPlugin(ScrollTrigger);
+
+// Register ScrollTrigger once
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const About = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -12,9 +17,8 @@ const About = () => {
   const contentRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    
-    const ctx = gsap.context(() => {
+  useGSAP(
+    () => {
       // Heading Animation
       gsap.fromTo(
         headingRef.current,
@@ -48,7 +52,7 @@ const About = () => {
         }
       );
 
-      // Stats Animation
+      // Stats Animation - safely check if statsRef exists
       if (statsRef.current) {
         gsap.fromTo(
           statsRef.current.children,
@@ -67,10 +71,9 @@ const About = () => {
           }
         );
       }
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+    },
+    { scope: sectionRef }
+  );
 
   return (
     <section className={styles.aboutSection} ref={sectionRef} id="about">
@@ -127,17 +130,24 @@ const About = () => {
               <p className={styles.text}>
                 <span className={styles.highlight}>Exodia '26</span>, the
                 all-Kerala tech event, will take place on February 7th and 8th
-                at the College of Engineering Chengannur. This year,{" "}
-                <span className={styles.highlight}>IEDC BOOTCAMP CEC</span>,{" "}
-                <span className={styles.highlight}>FOCES CEC</span>, and{" "}
-                <span className={styles.highlight}>MULEARN CHN</span>, in
+                at the College of Engineering Chengannur.
+                <br />
+                <br />
+                This year,{" "}
+                <span className={styles.highlight}>
+                  IEDC BOOTCAMP CEC
+                </span>, <span className={styles.highlight}>FOCES CEC</span>,
+                and <span className={styles.highlight}>MULEARN CHN</span>, in
                 collaboration with Notion, are offering hands-on workshops in
                 Robotics, Artificial Intelligence, and Computer Vision. Led by
                 expert mentors,{" "}
                 <span className={styles.highlight}>Exodia 3.0</span> will
                 provide valuable insights, networking opportunities, and inspire
-                innovation. Join us for this transformative event to shape the
-                future of technology!
+                innovation.
+                <br />
+                <br />
+                Join us for this transformative event to shape the future of
+                technology!
               </p>
             </div>
 
@@ -149,7 +159,7 @@ const About = () => {
               </div>
               <div className={styles.statDivider}></div>
               <div className={styles.statItem}>
-                <span className={styles.statNumber}>180+</span>
+                <span className={styles.statNumber}>180</span>
                 <span className={styles.statLabel}>STUDENTS</span>
               </div>
               <div className={styles.statDivider}></div>

@@ -1,9 +1,14 @@
-import { useState, useEffect, useRef } from "react";
+"use client";
+import { useState, useRef } from "react";
 import styles from "./FAQ.module.css";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
-gsap.registerPlugin(ScrollTrigger);
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const faqs = [
   {
@@ -51,35 +56,32 @@ const faqs = [
 
 const FAQ = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    const ctx = gsap.context((self) => {
-      const items = self.selector ? self.selector(`.${styles.faqItem}`) : [];
+  useGSAP(() => {
+    // Select elements using the class name from the CSS module
+    const items = gsap.utils.toArray<HTMLElement>(`.${styles.faqItem}`);
 
-      items.forEach((item: Element) => {
-        gsap.fromTo(
-          item,
-          {
-            opacity: 0,
-            y: 50,
+    items.forEach((item) => {
+      gsap.fromTo(
+        item,
+        {
+          opacity: 0,
+          y: 50,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          scrollTrigger: {
+            trigger: item,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
           },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.5,
-            scrollTrigger: {
-              trigger: item,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      });
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, []);
+        }
+      );
+    });
+  }, { scope: containerRef });
 
   const toggleFAQ = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
@@ -89,9 +91,11 @@ const FAQ = () => {
     <section className={styles.faqSection} id="faq" ref={containerRef}>
       <div className={styles.gridBackground}></div>
       <div className={styles.glowBackground}></div>
+      
       <h2 className={styles.heading}>
         FREQUENTLY ASKED <span className={styles.highlight}>QUESTIONS</span>
       </h2>
+      
       <div className={styles.faqContainer}>
         {faqs.map((faq, index) => (
           <div
@@ -104,7 +108,7 @@ const FAQ = () => {
             <div className={styles.question}>
               {faq.question}
               <span className={styles.icon}>
-                {activeIndex === index ? "-" : "+"}
+                {activeIndex === index ? <FaChevronUp/> : <FaChevronDown />}
               </span>
             </div>
             <div className={styles.answer}>

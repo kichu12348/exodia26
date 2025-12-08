@@ -1,10 +1,15 @@
 "use client";
-import { useEffect, useRef } from "react";
-import gsap  from "gsap";
+import { useRef } from "react";
+import Image from "next/image";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { TextPlugin } from "gsap/TextPlugin";
 import styles from "./Stack.module.css";
-gsap.registerPlugin(ScrollTrigger, TextPlugin);
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, TextPlugin);
+}
 
 const stacks = [
   {
@@ -32,8 +37,8 @@ const Stack = () => {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
+  useGSAP(
+    () => {
       // Heading Animation
       if (headingRef.current) {
         gsap.to(headingRef.current, {
@@ -71,10 +76,9 @@ const Stack = () => {
           }
         );
       }
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+    },
+    { scope: sectionRef }
+  );
 
   return (
     <section ref={sectionRef} className={styles.stackSection} id="stack">
@@ -82,6 +86,7 @@ const Stack = () => {
       <div className={styles.glowBackground}></div>
       <div className={styles.container}>
         <div className={styles.header}>
+          {/* Initial empty text for TextPlugin to fill */}
           <h2 ref={headingRef} className={styles.title}></h2>
         </div>
 
@@ -90,15 +95,20 @@ const Stack = () => {
             <div key={stack.id} className={styles.card}>
               <div className={styles.cardInner}>
                 <div className={styles.cardBgNumber}>{stack.number}</div>
+
                 <div className={styles.imageWrapper}>
-                  <img
+                  {/* Optimized Next.js Image */}
+                  <Image
                     src={stack.image}
                     alt={stack.title}
+                    fill
                     className={styles.cardImage}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                   <div className={styles.cornerDecorTopLeft}></div>
                   <div className={styles.cornerDecorBottomRight}></div>
                 </div>
+
                 <div className={styles.cardContent}>
                   <h3 className={styles.cardTitle}>{stack.title}</h3>
                 </div>
