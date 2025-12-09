@@ -253,6 +253,30 @@
   text-shadow: 0 0 5px var(--color-primary);
 }
 
+.createdByBar {
+  justify-content: center;
+  flex: 1;
+}
+
+.createdBy {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.heartIconAnimation {
+  animation: heartbeat 0.5s infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
 @media (max-width: 1024px) {
   .topSection {
     grid-template-columns: 1fr 1fr;

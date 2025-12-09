@@ -6,11 +6,19 @@ import {
   FaInstagram,
   FaYoutube,
   FaFacebook,
+  FaHeart,
 } from "react-icons/fa";
 import Modal from "../Modal/Modal";
 
 const Footer = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isHeartBeating, setIsHeartBeating] = useState(false);
+
+  const handleHeartClick = () => {
+    if (isHeartBeating) return;
+    setIsHeartBeating(true);
+    setTimeout(() => setIsHeartBeating(false), 1000);
+  };
 
   return (
     <footer className={styles.footer} id="contact">
@@ -87,7 +95,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className={styles.bottomBar}>
           <div className={styles.copyright}>
-            © 2025 Exodia™. All Rights Reserved.
+            © {new Date().getFullYear()} Exodia™. All Rights Reserved.
           </div>
           <div className={styles.bottomLinks}>
             <button
@@ -103,6 +111,16 @@ const Footer = () => {
             >
               Terms & Conditions
             </button>
+          </div>
+        </div>
+        <div className={`${styles.bottomBar} ${styles.createdByBar}`}>
+          <div className={styles.createdBy} onClick={handleHeartClick}>
+            Made With{" "}
+            <FaHeart
+              color="red"
+              className={isHeartBeating ? styles.heartIconAnimation : ""}
+            />{" "}
+            by Kichu
           </div>
         </div>
       </div>
