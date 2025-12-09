@@ -29,11 +29,11 @@ const Footer = () => {
             <h3 className={styles.sectionTitle}>Point of Contact</h3>
             <div className={styles.contactItem}>
               <FaPhoneAlt className={styles.icon} />
-              <span>+91-9744737096, +91-7025120451</span>
+              <span>+91-9526928521, +91-9037195527</span>
             </div>
             <div className={styles.contactItem}>
               <FaPhoneAlt className={styles.icon} />
-              <span>+91-8281062032, +91-8089410787</span>
+              <span>+91-7902622108, +91-7902425838</span>
             </div>
             <div className={styles.contactItem}>
               <FaEnvelope className={styles.icon} />

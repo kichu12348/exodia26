@@ -4,7 +4,40 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FaStarOfLife } from "react-icons/fa";
+import { useState } from "react";
+import Modal from "../Modal/Modal";
 import styles from "./About.module.css";
+
+interface ForumData {
+  id: number;
+  name: string;
+  content: string;
+  logo: string;
+}
+
+const forums: ForumData[] = [
+  {
+    id: 1,
+    name: "IEDC BOOTCAMP CEC",
+    content:
+      "IEDC BOOTCAMP CEC is the Innovation and Entrepreneurship Development Cell of College of Engineering Chengannur, functioning under Kerala Startup Mission. It serves as a dynamic platform where student-driven innovation, technology, and creativity converge.\n\nThrough hands-on sessions, mentorship, teamwork, and practical challenges, the Bootcamp helps students develop problem-solving skills, leadership, and an entrepreneurial mindset. It encourages experimentation, collaboration, and learning by doing—empowering students to turn imagination into innovation and take the first step toward becoming future changemakers.",
+    logo: "/logos/iedcbootcamp.png",
+  },
+  {
+    id: 2,
+    name: "FOCES CEC",
+    content:
+      "Forum of Computer Engineering Students – FOCES is the official forum of the Computer Science and Engineering Department of CEC. It functions as a dynamic platform where students can share ideas, collaborate on projects, explore emerging technologies, and develop their technical and creative potential.\n\nFOCES CEC continuously works to build a strong tech-driven community through workshops, tech talks, events, competitions, and student-led initiatives. It promotes learning beyond the classroom, encourages innovation, and creates opportunities for students to grow, experiment, and contribute to impactful activities.",
+    logo: "/logos/foces.png",
+  },
+  {
+    id: 3,
+    name: "MULEARN CHN",
+    content:
+      "µLearn CHN is a vibrant, peer-driven community powered by GTech, dedicated to learning through mutual growth. Built on the philosophy of micro-learning and consistency, it offers a space where students can discover their interests, explore technology, engage in discussions, and learn skills that prepare them for real-world opportunities. We bring together curious minds for the exploration of new ideas, upskilling, and collaboration on impactful projects.\n\nRooted in micro-learning, challenges, mentorship, and hands-on experiences, we help students grow consistently at a personal and professional level. At µLearn CHN, curiosity becomes capability, and ideas become action.",
+    logo: "/logos/mulearn.png",
+  },
+];
 
 // Register ScrollTrigger once
 if (typeof window !== "undefined") {
@@ -16,6 +49,21 @@ const About = () => {
   const headingRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedForum, setSelectedForum] = useState<ForumData | null>(null);
+
+  const handleForumClick = (id: number) => {
+    const forum = forums[id];
+    if (forum) {
+      setSelectedForum(forum);
+      setIsModalVisible(true);
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalVisible(false);
+  };
 
   useGSAP(
     () => {
@@ -134,13 +182,29 @@ const About = () => {
                 <br />
                 <br />
                 This year,{" "}
-                <span className={styles.highlight}>
+                <span
+                  className={`${styles.highlight} ${styles.highlight_clickable}`}
+                  onClick={() => handleForumClick(0)}
+                >
                   IEDC BOOTCAMP CEC
-                </span>, <span className={styles.highlight}>FOCES CEC</span>,
-                and <span className={styles.highlight}>MULEARN CHN</span>, in
-                collaboration with Notion, are offering hands-on workshops in
-                Robotics, Artificial Intelligence, and Computer Vision. Led by
-                expert mentors,{" "}
+                </span>
+                ,{" "}
+                <span
+                  className={`${styles.highlight} ${styles.highlight_clickable}`}
+                  onClick={() => handleForumClick(1)}
+                >
+                  FOCES CEC
+                </span>
+                , and{" "}
+                <span
+                  className={`${styles.highlight} ${styles.highlight_clickable}`}
+                  onClick={() => handleForumClick(2)}
+                >
+                  MULEARN CHN
+                </span>
+                , in collaboration with Notion, are offering hands-on workshops
+                in Robotics, Artificial Intelligence, and Computer Vision. Led
+                by expert mentors,{" "}
                 <span className={styles.highlight}>Exodia 3.0</span> will
                 provide valuable insights, networking opportunities, and inspire
                 innovation.
@@ -171,6 +235,28 @@ const About = () => {
           </div>
         </div>
       </div>
+
+      <Modal isVisible={isModalVisible} onClose={closeModal}>
+        {selectedForum && (
+          <div className={styles.modalContent}>
+            <img
+              src={selectedForum.logo}
+              alt={selectedForum.name}
+              className={styles.modalLogo}
+            />
+            <h3 className={styles.modalHeading}>{selectedForum.name}</h3>
+            <p className={styles.modalText}>
+              {selectedForum.content.split("\n\n").map((paragraph, index) => (
+                <span key={index}>
+                  {paragraph}
+                  <br />
+                  <br />
+                </span>
+              ))}
+            </p>
+          </div>
+        )}
+      </Modal>
     </section>
   );
 };
