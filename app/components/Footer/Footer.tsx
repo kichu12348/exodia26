@@ -120,7 +120,7 @@ const Footer = () => {
               color="red"
               className={isHeartBeating ? styles.heartIconAnimation : ""}
             />{" "}
-            by Kichu
+            by Team Exodia
           </div>
         </div>
       </div>
