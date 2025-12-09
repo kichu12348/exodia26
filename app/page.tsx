@@ -32,10 +32,8 @@ function App() {
 
       try {
         await Promise.all(promises);
-        setIsLoading(false);
       } catch (error) {
         console.error("Error preloading images", error);
-        setIsLoading(false);
       }
     };
 
