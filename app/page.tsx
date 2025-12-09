@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero/Hero";
 import About from "./components/About/About";
@@ -8,8 +8,39 @@ import FAQ from "./components/FAQ/FAQ";
 import Footer from "./components/Footer/Footer";
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
 
+const Images =[
+  "/exodia_logo.svg",
+  "/assets/red-planet.webp",
+  "/assets/city-center.webp",
+  "/assets/city-left.webp",
+  "/assets/city-right.webp",
+]
+
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const preloadImages = async () => {
+      const promises = Images.map((src) => {
+        return new Promise<void>((resolve, reject) => {
+          const img = new Image();
+          img.src = src;
+          img.onload = () => resolve();
+          img.onerror = () => reject();
+        });
+      });
+
+      try {
+        await Promise.all(promises);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error preloading images", error);
+        setIsLoading(false);
+      }
+    };
+
+    preloadImages();
+  }, [])
 
   return (
     <>
