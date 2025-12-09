@@ -11,7 +11,7 @@ const CitySkyline = () => {
 
       {/* The Red Sun/Moon */}
       <img
-        src="/assets/city-center.webp"
+        src="/assets/red-planet.webp"
         alt="Red Planet"
         className={styles.sun}
       />

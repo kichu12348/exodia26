@@ -154,7 +154,7 @@
   text-shadow: 0 0 2px var(--color-primary);
 }
 
-.heading::after{
+.heading::after {
   content: "";
   position: absolute;
   bottom: -10px;
@@ -211,7 +211,7 @@
 }
 
 .statNumber {
-  font-family: var(--font-heading);
+  font-family: var(--font-body);
   font-size: 3.5rem;
   font-weight: 800;
   color: var(--color-white);
@@ -221,7 +221,7 @@
 }
 
 .statLabel {
-  font-family: var(--font-body);
+  font-family: var(--font-variable);
   font-size: 0.9rem;
   letter-spacing: 2px;
   color: rgba(var(--color-white-rgb), 0.6);
@@ -291,6 +291,7 @@
     flex-direction: column;
     gap: 2rem;
     padding: 1.5rem;
+    position: relative;
   }
 
   .statDivider {
@@ -300,5 +301,19 @@
 
   .statNumber {
     font-size: 3rem;
+  }
+  /*radial glow behind statsContainer*/
+  .statsContainer::before {
+    content: "";
+    position: absolute;
+    inset: -50px;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(var(--color-primary-rgb), 0.15) 0%,
+      rgba(var(--color-primary-rgb), 0.08) 40%,
+      transparent 70%
+    );
+    z-index: -1;
+    filter: blur(20px);
   }
 }
