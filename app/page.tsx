@@ -20,7 +20,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const preloadImages = async () => {
+    const preloadImages = () => {
       const promises = Images.map((src) => {
         return new Promise<void>((resolve, reject) => {
           const img = new Image();
@@ -31,7 +31,7 @@ function App() {
       });
 
       try {
-        await Promise.all(promises);
+        Promise.all(promises);
       } catch (error) {
         console.error("Error preloading images", error);
       }
