@@ -68,21 +68,22 @@ const About = () => {
       // Header animation - slide and border grow
       gsap.fromTo(
         headingRef.current,
-        { 
-          x: -80,
+        {
+          x: -50,
           opacity: 0,
-          scale: 0.95
+          scale: 0.95,
         },
         {
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top 70%",
             end: "top 30%",
-            scrub: 1,
+            scrub: 0.5, // Reduced scrub for snappier response
           },
           x: 0,
           opacity: 1,
           scale: 1,
+          force3D: true, // Force GPU layer
           ease: "power2.out",
         }
       );
@@ -90,8 +91,8 @@ const About = () => {
       // Content animation - slide from right
       gsap.fromTo(
         contentRef.current,
-        { 
-          x: 80,
+        {
+          x: 50,
           opacity: 0,
         },
         {
@@ -99,48 +100,54 @@ const About = () => {
             trigger: contentRef.current,
             start: "top 80%",
             end: "top 40%",
-            scrub: 1,
+            scrub: 0.5,
           },
           x: 0,
           opacity: 1,
+          force3D: true,
           ease: "power2.out",
         }
       );
 
-      // Parallax on header
+      // Parallax on header - reduced range to minimize jitter
       gsap.to(headingRef.current, {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
           end: "bottom top",
-          scrub: 2,
+          scrub: 0, // Zero scrub prevents floating effect on fast scrolls
         },
-        y: -30,
+        y: -50,
+        force3D: true,
         ease: "none",
       });
 
       // Stats animation - slide up with stagger
-      gsap.fromTo(
-        statsRef.current?.querySelectorAll(".statItem") || [],
-        { 
-          y: 60,
-          opacity: 0,
-          scale: 0.9
-        },
-        {
-          scrollTrigger: {
-            trigger: statsRef.current,
-            start: "top 85%",
-            end: "top 55%",
-            scrub: 1,
+      const statItems = statsRef.current?.querySelectorAll(".statItem");
+      if (statItems) {
+        gsap.fromTo(
+          statItems,
+          {
+            y: 40,
+            opacity: 0,
+            scale: 0.95,
           },
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          stagger: 0.15,
-          ease: "power2.out",
-        }
-      );
+          {
+            scrollTrigger: {
+              trigger: statsRef.current,
+              start: "top 85%",
+              end: "top 55%",
+              scrub: 0.5,
+            },
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            stagger: 0.1,
+            force3D: true,
+            ease: "power2.out",
+          }
+        );
+      }
     },
     { scope: sectionRef }
   );
@@ -165,24 +172,15 @@ const About = () => {
             </p>
             <p>
               Organised by{" "}
-              <span
-                className={styles.link}
-                onClick={() => handleForumClick(0)}
-              >
+              <span className={styles.link} onClick={() => handleForumClick(0)}>
                 IEDC BOOTCAMP CEC
               </span>
               ,{" "}
-              <span
-                className={styles.link}
-                onClick={() => handleForumClick(1)}
-              >
+              <span className={styles.link} onClick={() => handleForumClick(1)}>
                 FOCES CEC
               </span>
               , and{" "}
-              <span
-                className={styles.link}
-                onClick={() => handleForumClick(2)}
-              >
+              <span className={styles.link} onClick={() => handleForumClick(2)}>
                 μLearn CHN
               </span>
               , the event is designed to provide participants with practical
