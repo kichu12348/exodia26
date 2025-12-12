@@ -17,7 +17,7 @@ const stacks = [
     id: 1,
     number: "01",
     title: "ROBOTICS",
-    image: "/stack/robotics.webp",
+    image: "/stack/robotics-1.webp",
     content: [
       "Master the core foundations of robotics.",
       "Discover how autonomous machines are conceived, built, and controlled.",
@@ -60,51 +60,66 @@ const stacks = [
 const Stack = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
   const [selectedStack, setSelectedStack] = useState<(typeof stacks)[0] | null>(
     null
   );
 
   useGSAP(
     () => {
-      // Heading Animation
+      // Heading Animation: TextPlugin typewriter effect
       if (headingRef.current) {
+        // First set initial state
+        gsap.set(headingRef.current, { opacity: 1 });
+
         gsap.fromTo(
           headingRef.current,
-          { y: -50, opacity: 0 },
+          {
+            text: "",
+            opacity: 1,
+          },
           {
             scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 80%",
+              trigger: headingRef.current,
+              start: "top 85%",
+              end: "top 50%",
+              scrub: 1,
             },
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            ease: "power4.out",
+            text: "STACKS",
+            ease: "none",
           }
         );
       }
 
-      // Cards Animation
-      if (cardsRef.current) {
-        gsap.fromTo(
-          cardsRef.current.children,
-          { y: 50, opacity: 0 },
-          {
-            scrollTrigger: {
-              trigger: cardsRef.current,
-              start: "top 75%",
+      // Cards Animation: Scrub-based staggered reveal
+      if (gridRef.current && gridRef.current.children.length > 0) {
+        const cards = Array.from(gridRef.current.children);
+
+        cards.forEach((card) => {
+          gsap.fromTo(
+            card,
+            {
+              y: 100,
+              opacity: 0,
+              scale: 0.9,
             },
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            stagger: 0.2,
-            ease: "back.out(1.2)",
-          }
-        );
+            {
+              scrollTrigger: {
+                trigger: card,
+                start: "top 95%",
+                end: "top 50%",
+                scrub: 1,
+              },
+              y: 0,
+              opacity: 1,
+              scale: 1,
+              ease: "none",
+            }
+          );
+        });
       }
     },
-    { scope: sectionRef }
+    { scope: sectionRef, dependencies: [] }
   );
 
   const openModal = (stack: (typeof stacks)[0]) => {
@@ -117,7 +132,6 @@ const Stack = () => {
 
   return (
     <section ref={sectionRef} className={styles.stackSection} id="stack">
-      <div className={styles.backgroundGlow}></div>
       <div className={styles.container}>
         <div className={styles.header}>
           <h2 ref={headingRef} className={styles.title}>
@@ -125,26 +139,44 @@ const Stack = () => {
           </h2>
         </div>
 
-        <div ref={cardsRef} className={styles.grid}>
+        <div ref={gridRef} className={styles.grid}>
           {stacks.map((stack) => (
-            <div key={stack.id} className={styles.cardWrapper}>
-              <div
-                onClick={() => openModal(stack)}
-                className={`${styles.card} ${
-                  stack.id === 2 ? styles.cardCenter : ""
-                }`}
-              >
-                <div className={styles.cardContent}>
-                  <div className={styles.imageWrapper}>
-                    <Image
-                      src={stack.image}
-                      alt={stack.title}
-                      fill
-                      className={styles.cardImage}
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                  </div>
+            <div
+              key={stack.id}
+              className={styles.cardWrapper}
+              onClick={() => openModal(stack)}
+            >
+              <div className={styles.card}>
+                {/* Tech corners */}
+                <div
+                  className={`${styles.cornerMarker} ${styles.markerTopLeft}`}
+                ></div>
+                <div
+                  className={`${styles.cornerMarker} ${styles.markerTopRight}`}
+                ></div>
+                <div
+                  className={`${styles.cornerMarker} ${styles.markerBottomLeft}`}
+                ></div>
+                <div
+                  className={`${styles.cornerMarker} ${styles.markerBottomRight}`}
+                ></div>
+
+                <div className={styles.imageContainer}>
+                  <Image
+                    src={stack.image}
+                    alt={stack.title}
+                    fill
+                    className={styles.cardImage}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                </div>
+
+                <div className={styles.contentContainer}>
                   <h3 className={styles.cardTitle}>{stack.title}</h3>
+                  <div className={styles.exploreText}>
+                    <span>View Details</span>
+                    <span>→</span>
+                  </div>
                 </div>
               </div>
             </div>

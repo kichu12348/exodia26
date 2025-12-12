@@ -38,6 +38,7 @@ const Hero = () => {
       
       {/* Overlay Gradient for blending */}
       <div className={styles.overlayGradient}></div>
+      <div className={styles.bottomGradient}></div>
     </section>
   );
 };

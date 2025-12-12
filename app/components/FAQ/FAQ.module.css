@@ -1,5 +1,5 @@
 .faqSection {
-  padding: 8rem 2rem;
+  padding: 6rem 2rem;
   background-color: transparent;
   color: var(--color-white);
   display: flex;
@@ -9,45 +9,22 @@
   overflow: hidden;
 }
 
-.glowBackground {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  max-width: 800px;
-  height: 800px;
-  background: radial-gradient(
-    circle,
-    rgba(255, 0, 60, 0.15) 0%,
-    transparent 70%
-  );
-  filter: blur(60px);
-  z-index: 0;
-  pointer-events: none;
-}
-
 .heading {
   font-family: var(--font-heading);
-  font-size: 3.5rem;
+  font-size: 5rem;
   margin-bottom: 4rem;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  
-  background: linear-gradient(
-    to right,
-    var(--color-orange-gradient-start),
-    var(--color-orange-gradient-end)
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(
-    0 0 10px
-      color-mix(in srgb, var(--color-orange-gradient-start), transparent 70%)
-  );
+  color: var(--color-accent);
   width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 0.1em;
+}
+
+.letter {
+  display: inline-block;
 }
 
 .faqContainer {
@@ -55,97 +32,154 @@
   max-width: 900px;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  z-index: 2;
+  gap: 1.2rem;
 }
 
-.faqItem {
+.faqCard {
   position: relative;
-  background: transparent;
   width: 100%;
   cursor: pointer;
-  /* Removed clip-path to use SVG background */
+  background: rgba(255, 204, 128, 0.02);
+  transition: all 0.3s ease;
+  padding: 1.5rem 2rem;
 }
 
-.svgBackground {
+/* Unique asymmetric border - top-left and bottom-right only */
+.faqCard::before {
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 40px;
   height: 100%;
-  pointer-events: none;
-  z-index: 0;
+  border-left: 2px solid rgba(255, 204, 128, 0.2);
+  border-top: 2px solid rgba(255, 204, 128, 0.2);
   transition: all 0.3s ease;
 }
 
-/* Glow effect on hover handled by SVG stroke, or could add filter drop-shadow here */
-.faqItem:hover .svgBackground {
-  filter: drop-shadow(0 0 5px rgba(255, 138, 0, 0.3));
+.faqCard::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 40px;
+  height: 100%;
+  border-right: 2px solid rgba(255, 204, 128, 0.2);
+  border-bottom: 2px solid rgba(255, 204, 128, 0.2);
+  transition: all 0.3s ease;
 }
 
-.contentWrapper {
-  position: relative;
-  z-index: 1;
-  padding: 1.5rem 2rem;
-  padding-top: 2.5rem; /* Clear the top tab */
+.faqCard:hover::before,
+.faqCard.active::before {
+  border-color: var(--color-accent);
+  width: 60px;
 }
 
-.question {
+.faqCard:hover::after,
+.faqCard.active::after {
+  border-color: var(--color-accent);
+  width: 60px;
+}
+
+.faqCard:hover,
+.faqCard.active {
+  background: rgba(255, 204, 128, 0.04);
+}
+
+.questionRow {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  font-size: 1.2rem;
-  font-weight: 600;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.questionText {
+  flex: 1;
+  font-family: var(--font-variable);
+  font-size: 1.15rem;
+  font-weight: 500;
   color: rgba(255, 255, 255, 0.9);
+  margin: 0;
   transition: color 0.3s ease;
 }
 
-.faqItem:hover .question {
-  color: var(--color-white);
-  text-shadow: 0 0 8px rgba(255, 138, 0, 0.5);
+.faqCard:hover .questionText,
+.faqCard.active .questionText {
+  color: var(--color-accent);
 }
 
-.icon {
+.toggleIcon {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--color-accent);
+  font-size: 0.9rem;
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  color: var(--color-orange-gradient-end);
+  flex-shrink: 0;
 }
 
-.iconRotate {
-  transform: rotate(180deg);
+.active .toggleIcon {
+  transform: rotate(45deg);
 }
 
-.answer {
+.answerContainer {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.4s ease, padding-top 0.4s ease;
-  opacity: 0.5;
+  transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
 }
 
-.answerInner {
-  min-height: 0;
-  color: rgba(255, 255, 255, 0.6);
-  line-height: 1.6;
-  font-family: var(--font-variable);
-  padding-top: 1rem;
-}
-
-.active .answer {
+.active .answerContainer {
   grid-template-rows: 1fr;
-  opacity: 1;
 }
 
+.answerText {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.answerText p {
+  font-family: var(--font-variable);
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.7;
+  margin: 0;
+  padding-top: 1.2rem;
+  padding-right: 3rem;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .heading {
-    font-size: 2.2rem;
+  .faqSection {
+    padding: 4rem 1rem;
   }
 
-  .contentWrapper {
-    padding: 1.2rem;
-    padding-top: 2.2rem;
+  .heading {
+    font-size: 3.5rem;
+  }
+
+  .faqCard {
+    padding: 1.2rem 1.5rem;
+  }
+
+  .faqCard::before,
+  .faqCard::after {
+    width: 25px;
+  }
+
+  .faqCard:hover::before,
+  .faqCard.active::before,
+  .faqCard:hover::after,
+  .faqCard.active::after {
+    width: 35px;
+  }
+
+  .questionText {
+    font-size: 1rem;
+  }
+
+  .answerText p {
+    font-size: 0.95rem;
+    padding-right: 1rem;
   }
 }

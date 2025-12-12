@@ -1,10 +1,8 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-import { useState } from "react";
 import Modal from "../Modal/Modal";
 import styles from "./About.module.css";
 
@@ -67,160 +65,152 @@ const About = () => {
 
   useGSAP(
     () => {
-      // Heading Animation
+      // Header animation - slide and border grow
       gsap.fromTo(
         headingRef.current,
-        { x: -50, opacity: 0 },
+        { 
+          x: -80,
+          opacity: 0,
+          scale: 0.95
+        },
         {
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top 70%",
+            end: "top 30%",
+            scrub: 1,
           },
           x: 0,
           opacity: 1,
-          duration: 1,
-          ease: "power4.out",
+          scale: 1,
+          ease: "power2.out",
         }
       );
 
-      // Content Animation
+      // Content animation - slide from right
       gsap.fromTo(
         contentRef.current,
-        { x: 50, opacity: 0 },
+        { 
+          x: 80,
+          opacity: 0,
+        },
         {
           scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
+            trigger: contentRef.current,
+            start: "top 80%",
+            end: "top 40%",
+            scrub: 1,
           },
           x: 0,
           opacity: 1,
-          duration: 1,
-          delay: 0.2,
-          ease: "power4.out",
+          ease: "power2.out",
         }
       );
 
-      // Stats Animation
-      if (statsRef.current) {
-        gsap.fromTo(
-          statsRef.current,
-          { y: 30, opacity: 0 },
-          {
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 60%",
-            },
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            delay: 0.4,
-            ease: "back.out(1.7)",
-          }
-        );
-      }
+      // Parallax on header
+      gsap.to(headingRef.current, {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 2,
+        },
+        y: -30,
+        ease: "none",
+      });
+
+      // Stats animation - slide up with stagger
+      gsap.fromTo(
+        statsRef.current?.querySelectorAll(".statItem") || [],
+        { 
+          y: 60,
+          opacity: 0,
+          scale: 0.9
+        },
+        {
+          scrollTrigger: {
+            trigger: statsRef.current,
+            start: "top 85%",
+            end: "top 55%",
+            scrub: 1,
+          },
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          stagger: 0.15,
+          ease: "power2.out",
+        }
+      );
     },
     { scope: sectionRef }
   );
 
   return (
-    <section className={styles.aboutSection} ref={sectionRef} id="about">
-      <div className={styles.backgroundEffects}></div>
-
+    <section className={styles.section} ref={sectionRef} id="about">
+      <div className={styles.topGradient}></div>
       <div className={styles.container}>
-        <div className={styles.contentGrid}>
-          {/* Left Column: Heading */}
-          <div className={styles.headingWrapper} ref={headingRef}>
-            <h2 className={styles.heading}>
-              <span className={styles.headingSmall}>What is</span>
-              <div className={styles.headingLine}>
-                <span className={styles.headingLarge}>exodia</span>
-                <span className={styles.questionMark}>?</span>
-              </div>
-            </h2>
+        <div className={styles.header} ref={headingRef}>
+          <h2 className={styles.title}>
+            WHAT IS <br />
+            <span className={styles.highlight}>EXODIA?</span>
+          </h2>
+        </div>
+
+        <div className={styles.contentWrapper} ref={contentRef}>
+          <div className={styles.description}>
+            <p>
+              Exodia 3.0 brings together innovators from across Kerala for a
+              hands-on technical meet on February 7th and 8th at the College of
+              Engineering Chengannur.
+            </p>
+            <p>
+              Organised by{" "}
+              <span
+                className={styles.link}
+                onClick={() => handleForumClick(0)}
+              >
+                IEDC BOOTCAMP CEC
+              </span>
+              ,{" "}
+              <span
+                className={styles.link}
+                onClick={() => handleForumClick(1)}
+              >
+                FOCES CEC
+              </span>
+              , and{" "}
+              <span
+                className={styles.link}
+                onClick={() => handleForumClick(2)}
+              >
+                μLearn CHN
+              </span>
+              , the event is designed to provide participants with practical
+              exposure through structured learning experiences and collaborative
+              sessions.
+            </p>
+            <p>
+              The event features hands-on workshops in Robotics, Data Science
+              with Machine Learning, and Computer Vision, led by experienced
+              mentors, with an emphasis on skill development, professional
+              networking, and innovation.
+            </p>
           </div>
 
-          {/* Right Column: Content & Stats */}
-          <div className={styles.rightColumn}>
-            <div className={styles.infoCard} ref={contentRef}>
-              <p className={styles.text}>
-                Exodia 3.0 brings together innovators from across Kerala for a
-                hands-on technical meet on February 7th and 8th at the College
-                of Engineering Chengannur.
-                <br />
-                <br />
-                Organised by{" "}
-                <span
-                  className={styles.highlightLink}
-                  onClick={() => handleForumClick(0)}
-                >
-                  IEDC BOOTCAMP CEC
-                </span>
-                ,{" "}
-                <span
-                  className={styles.highlightLink}
-                  onClick={() => handleForumClick(1)}
-                >
-                  FOCES CEC
-                </span>
-                , and{" "}
-                <span
-                  className={styles.highlightLink}
-                  onClick={() => handleForumClick(2)}
-                >
-                  μLearn CHN
-                </span>
-                , the event is designed to provide participants with practical
-                exposure through structured learning experiences and
-                collaborative sessions.
-                <br />
-                <br />
-                The event features hands-on workshops in Robotics, Data Science
-                with Machine Learning, and Computer Vision, led by experienced
-                mentors, with an emphasis on skill development, professional
-                networking, and innovation.
-              </p>
+          <div className={styles.stats} ref={statsRef}>
+            <div className={`${styles.statItem} statItem`}>
+              <span className={styles.statNumber}>3</span>
+              <span className={styles.statLabel}>STACKS</span>
             </div>
-
-            {/* Stats Section */}
-            <div className={styles.statsContainer} ref={statsRef}>
-              <div className={styles.statItem}>
-                <span className={styles.statNumber}>3</span>
-                <span className={styles.statLabel}>STACKS</span>
-              </div>
-
-              <div className={styles.chevronDivider}>
-                <svg viewBox="0 0 24 100" preserveAspectRatio="none">
-                  <polyline
-                    points="0,0 24,50 0,100"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                </svg>
-              </div>
-
-              <div className={styles.statItem}>
-                <span className={styles.statNumber}>180</span>
-                <span className={styles.statLabel}>STUDENTS</span>
-              </div>
-
-              <div className={styles.chevronDivider}>
-                <svg viewBox="0 0 24 100" preserveAspectRatio="none">
-                  <polyline
-                    points="0,0 24,50 0,100"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                </svg>
-              </div>
-
-              <div className={styles.statItem}>
-                <span className={styles.statNumber}>2</span>
-                <span className={styles.statLabel}>DAYS</span>
-              </div>
+            <div className={styles.statDivider}></div>
+            <div className={`${styles.statItem} statItem`}>
+              <span className={styles.statNumber}>180</span>
+              <span className={styles.statLabel}>STUDENTS</span>
+            </div>
+            <div className={styles.statDivider}></div>
+            <div className={`${styles.statItem} statItem`}>
+              <span className={styles.statNumber}>2</span>
+              <span className={styles.statLabel}>DAYS</span>
             </div>
           </div>
         </div>

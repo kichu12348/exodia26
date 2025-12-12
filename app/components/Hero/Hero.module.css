@@ -11,6 +11,17 @@
   padding-top: 4rem; /* Space for potential navbar */
 }
 
+.bottomGradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 50px;
+  background: linear-gradient(to top, var(--color-bg) 30%, transparent 100%);
+  z-index: 6;
+  pointer-events: none;
+}
+
 /* Background Planet Glow */
 .planetGlow {
   position: absolute;

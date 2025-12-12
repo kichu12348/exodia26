@@ -7,6 +7,7 @@ import Stack from "./components/Stack/Stack";
 import FAQ from "./components/FAQ/FAQ";
 import Footer from "./components/Footer/Footer";
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
+import ScrollBackground from "./components/Background/ScrollBackground";
 
 const Images =[
   "/exodia_logo.svg",
@@ -17,7 +18,7 @@ const Images =[
 ]
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const preloadImages = () => {
@@ -46,6 +47,7 @@ function App() {
         <LoadingScreen onComplete={() => setIsLoading(false)} />
       ) : (
         <>
+          <ScrollBackground />
           <Navbar />
           <Hero />
           <About />
