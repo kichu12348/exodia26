@@ -322,7 +322,6 @@
 
 .modalHeading {
   font-family: var(--font-heading);
-  text-transform: uppercase;
   font-size: 1.5rem;
   color: var(--color-accent);
   letter-spacing: 0.05em;
