@@ -64,11 +64,11 @@
 }
 
 .eyebrow {
-  font-family: var(--font-variable);
-  font-size: 0.8rem;
+  font-family: var(--font-heading);
+  font-size: 4.5rem;
   font-weight: 600;
-  letter-spacing: 0.3em;
-  color: var(--color-text-dim);
+  letter-spacing: 0.02em;
+  color: var(--color-accent);
 }
 
 .title {
@@ -257,6 +257,10 @@
     transform: translate(-50%, 100%); */
   }
 
+  .eyebrow {
+    font-size: 3rem;
+  }
+
   .title {
     font-size: 3.5rem;
   }
@@ -290,6 +294,11 @@
 }
 
 @media (max-width: 480px) {
+
+  .eyebrow {
+    font-size: 2.5rem;
+  }
+
   .title {
     font-size: 2.75rem;
   }
