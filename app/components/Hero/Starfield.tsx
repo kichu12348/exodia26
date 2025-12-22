@@ -9,7 +9,7 @@ interface Star {
   opacity: number;
 }
 
-const Starfield = () => {
+const Starfield = React.memo(() => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const isVisibleRef = useRef(true); // Track visibility
 
@@ -111,6 +111,6 @@ const Starfield = () => {
       }}
     />
   );
-};
+});
 
 export default Starfield;
